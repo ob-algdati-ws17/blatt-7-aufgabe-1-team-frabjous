@@ -2,13 +2,8 @@ language: cpp
 
 before_script:
   - mkdir build
-  - cd build
-  - cmake ..
-  - cmake -Dtest=ON ..
+  - cd build && cmake ..
+  - cd build && make ..
 
 script:
-  - pwd
-  - make
-  - make test
-  ./main.cpp.o
-  ./runUnitTests
+  - cd build && make test
