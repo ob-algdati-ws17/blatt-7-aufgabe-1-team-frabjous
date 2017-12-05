@@ -10,5 +10,6 @@ using namespace std;
 // empty list
 
 TEST(TreeTest, TreeTest_Trivial) {
+    avltree avl;
     EXPECT_EQ(1, 1);
 }
