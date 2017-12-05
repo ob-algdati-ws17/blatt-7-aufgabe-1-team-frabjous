@@ -2,8 +2,9 @@ language: cpp
 
 before_script:
   - mkdir build
-  - cd build && cmake ..
-  - cd build && make ..
+  - cd build
+  - cmake ..
+  - make
 
 script:
-  - cd build && make test
+  - make test
