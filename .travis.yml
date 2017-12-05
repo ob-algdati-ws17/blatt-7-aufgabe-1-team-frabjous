@@ -4,7 +4,11 @@ before_script:
   - mkdir build
   - cd build
   - cmake ..
+  - cmake -Dtest=ON ..
 
 script:
   - pwd
   - make
+  - make test
+  ./main.cpp.o
+  ./runUnitTests
