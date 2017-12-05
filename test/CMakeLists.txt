@@ -5,10 +5,9 @@ if (APPLE)
     add_definitions(-D__GLIBCXX__)
 endif (APPLE)
 
-add_executable(testList ${SRCS})
+add_executable(testTree ${SRCS})
 
-target_link_libraries(testList
-        list
+target_link_libraries(testTree
         gtest
         gmock
         )
