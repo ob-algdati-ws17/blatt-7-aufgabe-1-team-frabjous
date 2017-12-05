@@ -14,4 +14,4 @@ target_link_libraries(testTree
 
 include_directories("..")
 
-install(TARGETS testList DESTINATION bin)
+install(TARGETS testTree DESTINATION bin)
