@@ -3,10 +3,15 @@ project(main)
 
 set(CMAKE_CXX_STANDARD 11)
 
+add_subdirectory(avltree)
+
 set(SOURCE_FILES main.cpp)
 add_executable(main ${SOURCE_FILES})
 
+target_link_libraries(main LINK_PUBLIC avltree)
+
 # GoogleTest
+# as per Aufgabe 6 :)
 
 # We need thread support
 find_package(Threads REQUIRED)

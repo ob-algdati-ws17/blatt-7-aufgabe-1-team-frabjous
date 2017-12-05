@@ -8,7 +8,7 @@
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-//#include "tree.h"
+#include "avltree.h"
 
 class testTree : public ::testing::Test {
 };
