@@ -17,10 +17,10 @@ private:
         node *r = nullptr;
         //node(const int);
         //node(const int, Node *, Node *);
-        /*~Node();
+        /*~Node();*/
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
-        vector<int> *postorder() const; // (Nebenreihenfolge)*/
+        vector<int> *postorder() const; // (Nebenreihenfolge)
     };
 
     node *root = nullptr;
@@ -35,7 +35,7 @@ public:
 
     //void remove(const int);
 
-    /*vector<int> *preorder() const;  // (Hauptreihenfolge)
+    vector<int> *preorder() const;  // (Hauptreihenfolge)
     vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
     vector<int> *postorder() const; // (Nebenreihenfolge)*/
 

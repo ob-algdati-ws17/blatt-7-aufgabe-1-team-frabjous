@@ -1,10 +1,87 @@
 #include "avltree.h"
 #include <functional>
 
+using namespace ::std;
+
+/********************************************************************
+ * Traversal
+ *******************************************************************/
+//unchanged from Blatt 6
+
+vector<int> *avltree::preorder() const {
+    if (root == nullptr)
+        return nullptr;
+    return root->preorder();
+}
+
+vector<int> *avltree::node::preorder() const {
+    auto vec = new vector<int>();
+    // Wurzel in vec
+    vec->push_back(key);
+    // linken Nachfolger in vec
+    if (l != nullptr) {
+        auto left_vec = l->preorder();
+        vec->insert(vec->end(), left_vec->begin(), left_vec->end());
+    }
+    // rechten Nachfolger in vec
+    if (r != nullptr) {
+        auto right_vec = r->preorder();
+        vec->insert(vec->end(), right_vec->begin(), right_vec->end());
+    }
+    return vec;
+}
+
+vector<int> *avltree::inorder() const {
+    if (root == nullptr)
+        return nullptr;
+    return root->inorder();
+}
+
+vector<int> *avltree::node::inorder() const {
+    auto vec = new vector<int>();
+    // linken Nachfolger in vec
+    if (left != nullptr) {
+        auto left_vec = l->inorder();
+        vec->insert(vec->end(), left_vec->begin(), left_vec->end());
+    }
+    // Wurzel in vec
+    vec->push_back(key);
+    // rechten Nachfolger in vec
+    if (right != nullptr) {
+        auto right_vec = r->inorder();
+        vec->insert(vec->end(), right_vec->begin(), right_vec->end());
+    }
+    return vec;
+}
+
+vector<int> *avltree::postorder() const {
+    if (root == nullptr)
+        return nullptr;
+    return root->postorder();
+}
+
+vector<int> *avltree::node::postorder() const {
+    auto vec = new vector<int>();
+    // linken Nachfolger in vec
+    if (left != nullptr) {
+        auto left_vec = l->postorder();
+        vec->insert(vec->end(), left_vec->begin(), left_vec->end());
+    }
+    // rechten Nachfolger in vec
+    if (right != nullptr) {
+        auto right_vec = r->postorder();
+        vec->insert(vec->end(), right_vec->begin(), right_vec->end());
+    }
+    // Wurzel in vec
+    vec->push_back(key);
+    return vec;
+}
+
 /********************************************************************
  * operator<<
  *******************************************************************/
 //unchanged from Blatt 6
+
 std::ostream &operator<<(std::ostream &os, const avltree &tree) {
     function<void(std::ostream &, const int, const avltree::node *, const string)> printToOs
             = [&](std::ostream &os, const int value, const avltree::node *n, const string l) {
