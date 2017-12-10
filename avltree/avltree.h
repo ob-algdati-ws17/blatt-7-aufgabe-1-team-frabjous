@@ -1,7 +1,3 @@
-//
-// Created by hm-sthum on 05.12.2017.
-//
-
 #ifndef MAIN_TREE_H
 #define MAIN_TREE_H
 
@@ -47,4 +43,4 @@ public:
 
 };
 
-#endif //MAIN_TREE_H
+#endif

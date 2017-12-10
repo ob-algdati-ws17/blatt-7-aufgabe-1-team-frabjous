@@ -1,7 +1,3 @@
-//
-// Created by hm-sthum on 05.12.2017.
-//
-
 #ifndef PROJECT_TESTTREE_H
 #define PROJECT_TESTTREE_H
 
@@ -13,4 +9,4 @@
 class testTree : public ::testing::Test {
 };
 
-#endif //PROJECT_TESTTREE_H
+#endif

@@ -4,9 +4,10 @@
 /********************************************************************
  * operator<<
  *******************************************************************/
+//unchanged from Blatt 6
 std::ostream &operator<<(std::ostream &os, const avltree &tree) {
-    /*function<void(std::ostream &, const int, const avltree::Node *, const string)> printToOs
-                                                                                           = [&](std::ostream &os, const int value, const avltree::node *n, const string l) {
+    function<void(std::ostream &, const int, const avltree::node *, const string)> printToOs
+            = [&](std::ostream &os, const int value, const avltree::node *n, const string l) {
 
                 static int nullcount = 0;
 
@@ -16,23 +17,20 @@ std::ostream &operator<<(std::ostream &os, const avltree &tree) {
                        << " [label=\"" << l << "\"];" << endl;
                     nullcount++;
                 } else {
-                    os << "    " << value << " -> " << node->key
+                    os << "    " << value << " -> " << n->key
                        << " [label=\"" << l << "\"];" << endl;
 
-                    printToOs(os, n->key, n->left, "l");
-                    printToOs(os, n->key, n->right, "r");
+                    printToOs(os, n->key, n->l, "l");
+                    printToOs(os, n->key, n->r, "r");
                 }
             };
     os << "digraph tree {" << endl;
     if (tree.root == nullptr) {
         os << "    null " << "[shape=point];" << endl;
     } else {
-        printToOs(os, tree.root->key, tree.root->left, "l");
-        printToOs(os, tree.root->key, tree.root->right, "r");
+        printToOs(os, tree.root->key, tree.root->l, "l");
+        printToOs(os, tree.root->key, tree.root->r, "r");
     }
     os << "}" << endl;
-    return os;*/
-
-    os << "i'm printing!" << std::endl;
     return os;
 }
