@@ -15,9 +15,9 @@ private:
         node *parent = nullptr;
         node *l = nullptr;
         node *r = nullptr;
-        //node(const int);
-        //node(const int, Node *, Node *);
-        /*~Node();*/
+        node(const int k) : key(k) {};
+        node(const int k, node *eft, node *ight) : key(k), l(eft), r(ight) {};
+        ~node();
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
         vector<int> *postorder() const; // (Nebenreihenfolge)
