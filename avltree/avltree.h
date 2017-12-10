@@ -11,12 +11,12 @@ class avltree {
 private:
 
     struct node {
-        const int key;
+        const int k; //key
         node *parent = nullptr;
-        node *l = nullptr;
-        node *r = nullptr;
-        node(const int k) : key(k) {};
-        node(const int k, node *eft, node *ight) : key(k), l(eft), r(ight) {};
+        node *l = nullptr; //left
+        node *r = nullptr; //right
+        node(const int ey) : k(ey) {};
+        node(const int ey, node *eft, node *ight) : k(ey), l(eft), r(ight) {};
         ~node();
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
@@ -31,7 +31,7 @@ public:
 
     //bool search(const int) const;
 
-    //void insert(const int);
+    void insert(const int);
 
     //void remove(const int);
 
