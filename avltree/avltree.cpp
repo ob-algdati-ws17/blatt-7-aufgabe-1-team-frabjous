@@ -19,6 +19,22 @@ avltree::~avltree() { //recursive
 }
 
 /********************************************************************
+ * Search
+ *******************************************************************/
+bool avltree::search(const int k) const {
+    node* n = root;
+    while(n != nullptr) {
+        if(n->k == k)
+            return true;
+        if (k > n->k)
+            n = n->r;
+        else
+            n = n->l;
+    }
+    return false;
+}
+
+/********************************************************************
  * Insert
  *******************************************************************/
 void avltree::insert(const int key) {

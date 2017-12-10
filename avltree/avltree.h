@@ -29,7 +29,7 @@ public:
 
     ~avltree();
 
-    //bool search(const int) const;
+    bool search(const int) const;
 
     void insert(const int);
 
