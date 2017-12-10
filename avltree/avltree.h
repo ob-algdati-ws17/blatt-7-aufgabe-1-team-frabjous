@@ -27,7 +27,7 @@ private:
 
 public:
 
-    //~Tree();
+    ~avltree();
 
     //bool search(const int) const;
 
