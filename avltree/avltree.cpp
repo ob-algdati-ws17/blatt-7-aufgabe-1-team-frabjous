@@ -38,10 +38,30 @@ bool avltree::search(const int k) const {
  * Insert
  *******************************************************************/
 void avltree::insert(const int key) {
-    if (root == nullptr) { //empty tree
+    if (root == nullptr) //empty tree
         root = new node(key);
+    else
+        root->insert(key);
+}
+
+void avltree::node::insert(int key) {
+    if (key == k)
+        return;
+
+    if (key < k) {
+        if (l == nullptr)
+            l = new node(key);
+        else
+            l->insert(key);
+    }
+
+    if (key > k) {
+        if (r == nullptr)
+            r = new node(key);
+        else r->insert(key);
     }
 }
+
 
 /********************************************************************
  * Traversal

@@ -18,6 +18,7 @@ private:
         node(const int ey) : k(ey) {};
         node(const int ey, node *eft, node *ight) : k(ey), l(eft), r(ight) {};
         ~node();
+        void insert(const int);
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
         vector<int> *postorder() const; // (Nebenreihenfolge)
