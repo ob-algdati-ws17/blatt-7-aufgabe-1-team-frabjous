@@ -15,6 +15,8 @@ private:
         node *parent = nullptr;
         node *l = nullptr; //left
         node *r = nullptr; //right
+        //int height = 1; //new nodes start as leaves
+        int balance = 0;
 
         node(const int ey) : k(ey) {};
         node(const int ey, node *eft, node *ight) : k(ey), l(eft), r(ight) {};
@@ -31,6 +33,11 @@ private:
 
     node *root = nullptr;
 
+    int height(node*);
+    void calcBalance(node*);
+    void rebalance(node*);
+    void printBalance(node*);
+
 public:
 
     ~avltree();
@@ -45,6 +52,7 @@ public:
 
     friend node *findSymSucc(node *);
     friend ostream &operator<<(ostream &, const avltree &);
+    void printBalance();
 
 };
 

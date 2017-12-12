@@ -51,6 +51,7 @@ void avltree::node::insert(int key) {
     if (key < k) {
         if (l == nullptr)
             l = new node(key);
+
         else
             l->insert(key);
     }
@@ -253,4 +254,32 @@ std::ostream &operator<<(std::ostream &os, const avltree &tree) {
     }
     os << "}" << endl;
     return os;
+}
+
+int avltree::height(avltree::node *n) {
+    if (n == nullptr)
+        return -1;
+    return 1 + std::max(height(n->l), height(n->r));
+}
+
+void avltree::calcBalance(avltree::node *n) {
+    n->balance = height(n->r) - height(n->l);
+}
+
+void avltree::rebalance(avltree::node *n) {
+    calcBalance(n);
+}
+
+void avltree::printBalance() {
+    printBalance(root);
+    std::cout << std::endl;
+}
+
+void avltree::printBalance(avltree::node *n) {
+    if (n != nullptr) {
+        rebalance(n);
+        printBalance(n->l);
+        std::cout << n->balance << " ";
+        printBalance(n->r);
+    }
 }

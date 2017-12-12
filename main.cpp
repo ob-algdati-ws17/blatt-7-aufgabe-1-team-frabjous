@@ -6,7 +6,7 @@ using namespace std;
 int main() {
 
     avltree tree;
-    cout << tree << endl;
+    /*cout << tree << endl;
 
     tree.insert(117);
     cout << tree << endl;
@@ -15,7 +15,14 @@ int main() {
     cout << tree << endl;
 
     tree.insert(99);
+    cout << tree << endl;*/
+
+    for (int i = 1; i <= 10; ++i)
+        tree.insert(i);
+
     cout << tree << endl;
+
+    tree.printBalance();
 
     return 0;
 }
