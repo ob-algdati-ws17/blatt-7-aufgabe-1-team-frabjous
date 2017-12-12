@@ -1,5 +1,5 @@
 #include "testTree.h"
-#include <memory>
+//#include <memory>
 
 using namespace std;
 
@@ -35,4 +35,39 @@ TEST(TreeTest, TreeTest_InsertThree) {
     EXPECT_TRUE(avl.search(j));
     avl.insert(k);
     EXPECT_TRUE(avl.search(k));
+}
+
+// remove
+TEST(TreeTest, TreeTest_RemoveOne) {
+    avltree avl;
+    const int i = 117;
+    EXPECT_FALSE(avl.search(i));
+    avl.insert(i);
+    EXPECT_TRUE(avl.search(i));
+    avl.remove(i);
+    EXPECT_FALSE(avl.search(i));
+}
+
+TEST(TreeTest, TreeTest_RemoveThree) {
+    avltree avl;
+    const int i = 117;
+    const int j = 256;
+    const int k = 99;
+    EXPECT_FALSE(avl.search(i));
+    EXPECT_FALSE(avl.search(j));
+    EXPECT_FALSE(avl.search(k));
+    avl.insert(i);
+    EXPECT_TRUE(avl.search(i));
+    avl.insert(j);
+    EXPECT_TRUE(avl.search(j));
+    avl.insert(k);
+    EXPECT_TRUE(avl.search(k));
+    avl.remove(k);
+    EXPECT_FALSE(avl.search(k));
+    avl.remove(j);
+    EXPECT_FALSE(avl.search(j));
+    avl.remove(i);
+    EXPECT_FALSE(avl.search(i));
+    EXPECT_FALSE(avl.search(j));
+    EXPECT_FALSE(avl.search(k));
 }

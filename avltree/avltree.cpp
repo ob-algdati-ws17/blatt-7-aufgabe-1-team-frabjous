@@ -62,6 +62,89 @@ void avltree::node::insert(int key) {
     }
 }
 
+/********************************************************************
+ * Remove
+ *******************************************************************/
+
+avltree::node *findSymSucc(avltree::node *n) {
+    if (n->r == nullptr)
+        return nullptr;
+    auto result = n->r;
+    while (result->l != nullptr) {
+        result = result->l;
+    }
+    return result;
+}
+
+void avltree::remove(const int key) {
+    if (root != nullptr) {
+        if (root->k == key) {
+            auto toDelete = root;
+            if (root->l == nullptr && root->r == nullptr) {
+                root = nullptr;
+            } else if (root->l == nullptr) {
+                root = root->r;
+            } else if (root->r == nullptr)
+                root = root->l;
+            else {
+                auto symSucc = findSymSucc(root);
+                auto toDeleteNode = symSucc;
+                root->r = root->r->remove(symSucc->k);
+                toDeleteNode->l = nullptr;
+                toDeleteNode->r = nullptr;
+                root = new node(symSucc->k, root->l, root->r);
+                delete toDeleteNode;
+            }
+            toDelete->l = nullptr;
+            toDelete->r = nullptr;
+            delete toDelete;
+        } else
+            root->remove(key);
+    }
+}
+
+avltree::node *avltree::node::remove(const int key) {
+
+    if (key < k) {
+        if (l != nullptr) {
+            auto toDelete = l;
+            l = l->remove(key);
+            if (toDelete->k == key) {
+                toDelete->l = nullptr;
+                toDelete->r = nullptr;
+                delete toDelete;
+            }
+        }
+        return this;
+    }
+
+    if (key > k) {
+        if (r != nullptr) {
+            auto toDelete = r;
+            r = r->remove(key);
+            if (toDelete->k == key) {
+                toDelete->l = nullptr;
+                toDelete->r = nullptr;
+                delete toDelete;
+            }
+        }
+        return this;
+    }
+
+    if (k == key) {
+        if (l == nullptr && r == nullptr)
+            return nullptr;
+        if (l == nullptr)
+            return r;
+        if (r == nullptr)
+            return l;
+        auto symSucc = findSymSucc(this);
+        return new node(symSucc->k, l, r->remove(symSucc->k));
+    }
+    // code should not be reached, just to make the compiler happy
+    return nullptr;
+}
+
 
 /********************************************************************
  * Traversal
