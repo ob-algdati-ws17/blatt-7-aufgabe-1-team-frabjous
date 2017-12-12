@@ -21,16 +21,16 @@ avltree::~avltree() { //recursive
 /********************************************************************
  * Search
  *******************************************************************/
-bool avltree::search(const int k) const {
-    node* n = root;
-    while(n != nullptr) {
-        if(n->k == k)
-            return true;
-        if (k > n->k)
-            n = n->r;
-        else
-            n = n->l;
-    }
+bool avltree::search(const int value) const {
+    if (root == nullptr)
+        return false;
+    return root->search(value);
+}
+
+bool avltree::node::search(const int value) const {
+    if (value == k) return true;
+    if (value < k && left != nullptr) return l->search(value);
+    if (value > k && right != nullptr) return r->search(value);
     return false;
 }
 
@@ -144,7 +144,7 @@ vector<int> *avltree::node::postorder() const {
 
 std::ostream &operator<<(std::ostream &os, const avltree &tree) {
     function<void(std::ostream &, const int, const avltree::node *, const string)> printToOs
-            = [&](std::ostream &os, const int value, const avltree::node *n, const string l) {
+            = [&](std::ostream &, const int value, const avltree::node *n, const string l) {
 
                 static int nullcount = 0;
 

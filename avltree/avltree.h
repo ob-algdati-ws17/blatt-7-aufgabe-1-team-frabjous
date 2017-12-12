@@ -18,6 +18,7 @@ private:
         node(const int ey) : k(ey) {};
         node(const int ey, node *eft, node *ight) : k(ey), l(eft), r(ight) {};
         ~node();
+        bool search(const int) const;
         void insert(const int);
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
