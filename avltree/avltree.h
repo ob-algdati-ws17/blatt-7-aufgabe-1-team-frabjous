@@ -19,11 +19,12 @@ private:
         int balance = 0;
 
         node(const int ey) : k(ey) {};
+        node(const int ey, node *p) : k(ey), parent(p) {};
         node(const int ey, node *eft, node *ight) : k(ey), l(eft), r(ight) {};
         ~node();
 
         bool search(const int) const;
-        void insert(const int);
+        //void insert(const int, node*);
         node *remove(const int);
 
         vector<int> *preorder() const;  // (Hauptreihenfolge)
@@ -43,12 +44,12 @@ public:
     ~avltree();
 
     bool search(const int) const;
-    void insert(const int);
+    bool insert(const int);
     void remove(const int);
 
     vector<int> *preorder() const;  // (Hauptreihenfolge)
     vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
-    vector<int> *postorder() const; // (Nebenreihenfolge)*/
+    vector<int> *postorder() const; // (Nebenreihenfolge)
 
     friend node *findSymSucc(node *);
     friend ostream &operator<<(ostream &, const avltree &);

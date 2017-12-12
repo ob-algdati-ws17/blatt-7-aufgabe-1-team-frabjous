@@ -37,30 +37,42 @@ bool avltree::node::search(const int value) const {
 /********************************************************************
  * Insert
  *******************************************************************/
-void avltree::insert(const int key) {
-    if (root == nullptr) //empty tree
+bool avltree::insert(const int key) {
+    if (root == nullptr)
         root = new node(key);
-    else
-        root->insert(key);
-}
 
-void avltree::node::insert(int key) {
-    if (key == k)
-        return;
+    else {
+        node *n = root;
+        node *parent;
 
-    if (key < k) {
-        if (l == nullptr)
-            l = new node(key);
+        while (true) {
+            if (n->k == key)
+                return false;
 
-        else
-            l->insert(key);
+            parent = n;
+
+            bool toLeft = n->k > key;
+
+            if (toLeft)
+                n = n->l;
+            else
+                n = n->r;
+
+            if (n == nullptr) {
+                if (toLeft) {
+                    parent->l = new node(key, parent);
+                }
+                else {
+                    parent->r = new node(key, parent);
+                }
+
+                rebalance(parent);
+                break;
+            }
+        }
     }
 
-    if (key > k) {
-        if (r == nullptr)
-            r = new node(key);
-        else r->insert(key);
-    }
+    return true;
 }
 
 /********************************************************************
