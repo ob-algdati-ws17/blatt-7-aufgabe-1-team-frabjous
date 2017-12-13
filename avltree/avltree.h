@@ -12,14 +12,14 @@ private:
 
     struct node {
         const int k; //key
-        node *parent = nullptr;
+        node *p = nullptr;
         node *l = nullptr; //left
         node *r = nullptr; //right
         //int height = 1; //new nodes start as leaves
-        int balance = 0;
+        int bal = 0;
 
         node(const int ey) : k(ey) {};
-        node(const int ey, node *p) : k(ey), parent(p) {};
+        node(const int ey, node *arent) : k(ey), p(arent) {};
         node(const int ey, node *eft, node *ight) : k(ey), l(eft), r(ight) {};
         ~node();
 
@@ -34,6 +34,9 @@ private:
 
     node *root = nullptr;
 
+    void insertAt(const int, node*, node*);
+    void upin(node*);
+
     int height(node*);
     void calcBalance(node*);
     void rebalance(node*);
@@ -44,7 +47,7 @@ public:
     ~avltree();
 
     bool search(const int) const;
-    bool insert(const int);
+    void insert(const int);
     //void remove(const int);
 
     /*vector<int> *preorder() const;  // (Hauptreihenfolge)

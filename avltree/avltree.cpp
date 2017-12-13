@@ -29,24 +29,27 @@ bool avltree::search(const int value) const {
 
 bool avltree::node::search(const int value) const {
     if (value == k) return true;
-    if (value < k && left != nullptr) return l->search(value);
-    if (value > k && right != nullptr) return r->search(value);
+    if (value < k && l != nullptr) return l->search(value);
+    if (value > k && r != nullptr) return r->search(value);
     return false;
 }
 
 /********************************************************************
  * Insert
  *******************************************************************/
-bool avltree::insert(const int key) {
-    if (root == nullptr)
+void avltree::insert(const int key) {
+    std::cout << "INS key " << key << std::endl;
+    if (root == nullptr) { //leerer Baum
+        std::cout << "INS empty tree" << std::endl;
         root = new node(key);
+    }
 
     else {
-        node *n = root;
+        /*node *n = root;
         node *parent;
 
         while (true) {
-            if (n->k == key)
+            if (n->k == key) //keys sind unique
                 return false;
 
             parent = n;
@@ -69,10 +72,65 @@ bool avltree::insert(const int key) {
                 rebalance(parent);
                 break;
             }
+        }*/
+
+        if (!search(key)) {
+            std::cout << "INS actual insert" << std::endl;
+            insertAt(key, root, nullptr);
+        }
+
+        else
+            std::cout << "INS key duplicate" << std::endl;
+    }
+}
+
+
+void avltree::insertAt(const int key, avltree::node* p, avltree::node* gp) {
+    if (p != nullptr) {
+        std::cout << "INS key " << key << " @ parent " << p->k << std::endl;
+        gp = p;
+    }
+
+    if (p == nullptr) { //actual insert
+        std::cout << "INS actual insert with parent " << gp->k << std::endl;
+        if (key < gp->k) {
+            gp->l = new node(key, gp);
+        }
+
+        else if (key > gp->k) {
+            gp->r = new node(key, gp);
+        }
+
+        else
+            return;
+    }
+
+    if (p->bal == 1) { //fall 1
+        std::cout << "INS 1" << std::endl;
+        insertAt(key, p->l, p);
+    }
+    else if (p->bal == -1) { //fall 2
+        std::cout << "INS 2" << std::endl;
+        insertAt(key, p->r, p);
+    }
+    else if (p->bal == 0) { //fall 3
+        if (key > p->k) { //fall 3.1
+            std::cout << "INS 3.1" << std::endl;
+            p->bal += 1;
+            insertAt(key, p->r, p);
+        } else if (key < p->k) { //fall 3.2
+            std::cout << "INS 3.2" << std::endl;
+            p->bal -= 1;
+            insertAt(key, p->l, p);
         }
     }
 
-    return true;
+}
+
+void avltree::upin(avltree::node* n) {
+    if (n->k < n->p->k) { // n linker nachfolger von p
+
+    }
 }
 
 /********************************************************************
@@ -275,7 +333,7 @@ int avltree::height(avltree::node *n) {
 }
 
 void avltree::calcBalance(avltree::node *n) {
-    n->balance = height(n->r) - height(n->l);
+    n->bal = height(n->r) - height(n->l);
 }
 
 void avltree::rebalance(avltree::node *n) {
@@ -291,7 +349,7 @@ void avltree::printBalance(avltree::node *n) {
     if (n != nullptr) {
         rebalance(n);
         printBalance(n->l);
-        std::cout << n->balance << " ";
+        std::cout << n->bal << " ";
         printBalance(n->r);
     }
 }
