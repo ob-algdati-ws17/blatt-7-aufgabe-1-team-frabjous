@@ -42,9 +42,7 @@ void avltree::insert(const int key) {
     if (root == nullptr) { //leerer Baum
         std::cout << "INS empty tree" << std::endl;
         root = new node(key);
-    }
-
-    else {
+    } else {
         /*node *n = root;
         node *parent;
 
@@ -77,15 +75,13 @@ void avltree::insert(const int key) {
         if (!search(key)) {
             std::cout << "INS actual insert" << std::endl;
             insertAt(key, root, nullptr);
-        }
-
-        else
+        } else
             std::cout << "INS key duplicate" << std::endl;
     }
 }
 
 
-void avltree::insertAt(const int key, avltree::node* p, avltree::node* gp) {
+void avltree::insertAt(const int key, avltree::node *p, avltree::node *gp) {
     if (p != nullptr) {
         std::cout << "INS key " << key << " @ parent " << p->k << ", Balance " << p->bal << std::endl;
         gp = p;
@@ -97,29 +93,25 @@ void avltree::insertAt(const int key, avltree::node* p, avltree::node* gp) {
             std::cout << "INS left of " << gp->k << std::endl;
             gp->l = new node(key, gp);
             gp->bal -= 1;
+            upin(gp->l);
             return;
-        }
-
-        else if (key > gp->k) {
+        } else if (key > gp->k) {
             std::cout << "INS right of " << gp->k << std::endl;
             gp->r = new node(key, gp);
             gp->bal += 1;
+            upin(gp->r);
             return;
-        }
-
-        else
+        } else
             return;
     }
 
     if (p->bal == 1) { //fall 1
         std::cout << "INS 1" << std::endl;
         insertAt(key, p->l, p);
-    }
-    else if (p->bal == -1) { //fall 2
+    } else if (p->bal == -1) { //fall 2
         std::cout << "INS 2" << std::endl;
         insertAt(key, p->r, p);
-    }
-    else if (p->bal == 0) { //fall 3
+    } else if (p->bal == 0) { //fall 3
         if (key > p->k) { //fall 3.1
             std::cout << "INS 3.1" << std::endl;
             p->bal += 1;
@@ -129,18 +121,149 @@ void avltree::insertAt(const int key, avltree::node* p, avltree::node* gp) {
             p->bal -= 1;
             insertAt(key, p->l, p);
         }
-    }
-    else {
-        std::cout << "FUKKEN IMBALANCE" << std::endl;
+    } else {
+        std::cout << "INS FUKKEN IMBALANCE" << std::endl;
     }
 
 }
 
-void avltree::upin(avltree::node* n) {
+void avltree::upin(avltree::node *n) {
+    std::cout << "UPIN, key " << n->k << std::endl;
+
+    if (n->p == nullptr) {
+        std::cout << "UPIN: root reached." << std::endl;
+        return;
+    }
+
+    std::cout << "UPIN balance " << n->bal << " parent balance " << n->p->bal << std::endl;
+
     if (n->k < n->p->k) { // n linker nachfolger von p
+        std::cout << "UPIN: Left" << std::endl;
+
+        if (n->p->bal == 1) {
+            std::cout << "UPIN: Left 1.1" << std::endl;
+            n->p->bal = 0;
+            return;
+        }
+
+        if (n->p->bal == 0) {
+            std::cout << "UPIN: Left 1.2" << std::endl;
+            n->p->bal = -1;
+            std::cout << "UPIN: recursive to parent " << n->p->k << std::endl;
+            upin(n->p);
+            return;
+        }
+
+        if (n->p->bal == -1) {
+            std::cout << "UPIN: Left 1.3" << std::endl;
+            if (n->bal == -1) {
+                std::cout << "UPIN: Left 1.3.1" << std::endl;
+                rotateRight(n);
+                return;
+            }
+            if (n->bal == 1) {
+                std::cout << "UPIN: Left 1.3.2" << std::endl;
+                rotateLeftRight(n);
+                return;
+            }
+
+        }
+
+    } else { //n rechter nachfolger von p
+        std::cout << "UPIN: Right" << std::endl;
+
+        if (n->p->bal == -1) {
+            std::cout << "UPIN: Right 1.1" << std::endl;
+            n->p->bal = 0;
+            return;
+        }
+
+        if (n->p->bal == 0) {
+            std::cout << "UPIN: Right 1.2" << std::endl;
+            n->p->bal = 1;
+            std::cout << "UPIN: recursive to parent " << n->p->k << std::endl;
+            upin(n->p);
+            return;
+        }
+
+        if (n->p->bal == 1) {
+            std::cout << "UPIN: Right 1.3" << std::endl;
+            if (n->bal == 1) {
+                std::cout << "UPIN: Right 1.3.1" << std::endl;
+                rotateLeft(n);
+                return;
+            }
+            if (n->bal == -1) {
+                std::cout << "UPIN: Right 1.3.2" << std::endl;
+                rotateRightLeft(n);
+                return;
+            }
+
+        }
 
     }
 }
+
+void avltree::rotateLeft(avltree::node* a) {
+    std::cout << "ROTATE LEFT @ " << a->k << " & " << a->r->k << std::endl;
+    avltree::node *b = a->r;
+    b->p = a->p;
+    a->r = b->l;
+
+    if (a->r != nullptr)
+        a->r->p = a;
+
+    b->l = a;
+    a->p = b;
+
+    if (b->p != nullptr) {
+        if (b->p->r == a) {
+            b->p->r = b;
+        }
+        else {
+            b->p->l = b;
+        }
+    }
+
+    calcBalance(a);
+    calcBalance(b);
+}
+
+void avltree::rotateRight(avltree::node* a) {
+    std::cout << "ROTATE RIGHT @ " << a->k << " & " << a->l->k << std::endl;
+    avltree::node *b = a->l;
+    b->p = a->p;
+    a->l = b->r;
+
+    if (a->l != nullptr)
+        a->l->p = a;
+
+    b->r = a;
+    a->p = b;
+
+    if (b->p != nullptr) {
+        if (b->p->r == a) {
+            b->p->r = b;
+        }
+        else {
+            b->p->l = b;
+        }
+    }
+
+    calcBalance(a);
+    calcBalance(b);
+}
+
+void avltree::rotateLeftRight(avltree::node* a) {
+    rotateLeft(a->l);
+    rotateRight(a);
+}
+
+void avltree::rotateRightLeft(avltree::node* a) {
+    rotateRight(a->r);
+    rotateLeft(a);
+}
+
 
 /********************************************************************
  * Remove
@@ -303,8 +426,6 @@ vector<int> *avltree::node::postorder() const {
 /********************************************************************
  * operator<<
  *******************************************************************/
-//unchanged from Blatt 6
-
 std::ostream &operator<<(std::ostream &os, const avltree &tree) {
     function<void(std::ostream &, const int, const avltree::node *, const string)> printToOs
             = [&](std::ostream &, const int value, const avltree::node *n, const string l) {
@@ -319,6 +440,7 @@ std::ostream &operator<<(std::ostream &os, const avltree &tree) {
                 } else {
                     os << "    " << value << " -> " << n->k
                        << " [label=\"" << l << "\"];" << endl;
+                    os << "    " << value << " [xlabel=\"" << n->bal << "\"];" << endl;
 
                     printToOs(os, n->k, n->l, "l");
                     printToOs(os, n->k, n->r, "r");

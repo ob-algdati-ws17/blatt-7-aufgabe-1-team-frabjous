@@ -49,6 +49,10 @@ public:
     bool search(const int) const;
     void insert(const int);
     //void remove(const int);
+    void rotateLeft(node*);
+    void rotateRight(node*);
+    void rotateLeftRight(node*);
+    void rotateRightLeft(node*);
 
     /*vector<int> *preorder() const;  // (Hauptreihenfolge)
     vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
