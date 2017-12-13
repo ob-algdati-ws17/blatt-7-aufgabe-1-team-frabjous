@@ -25,11 +25,11 @@ private:
 
         bool search(const int) const;
         //void insert(const int, node*);
-        node *remove(const int);
+        //node *remove(const int);
 
-        vector<int> *preorder() const;  // (Hauptreihenfolge)
+        /*vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
-        vector<int> *postorder() const; // (Nebenreihenfolge)
+        vector<int> *postorder() const; // (Nebenreihenfolge)*/
     };
 
     node *root = nullptr;
@@ -45,13 +45,13 @@ public:
 
     bool search(const int) const;
     bool insert(const int);
-    void remove(const int);
+    //void remove(const int);
 
-    vector<int> *preorder() const;  // (Hauptreihenfolge)
+    /*vector<int> *preorder() const;  // (Hauptreihenfolge)
     vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
-    vector<int> *postorder() const; // (Nebenreihenfolge)
+    vector<int> *postorder() const; // (Nebenreihenfolge)*/
 
-    friend node *findSymSucc(node *);
+    //friend node *findSymSucc(node *);
     friend ostream &operator<<(ostream &, const avltree &);
     void printBalance();
 

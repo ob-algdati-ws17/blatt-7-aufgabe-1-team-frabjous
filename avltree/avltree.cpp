@@ -79,7 +79,7 @@ bool avltree::insert(const int key) {
  * Remove
  *******************************************************************/
 
-avltree::node *findSymSucc(avltree::node *n) {
+/*avltree::node *findSymSucc(avltree::node *n) {
     if (n->r == nullptr)
         return nullptr;
     auto result = n->r;
@@ -156,7 +156,7 @@ avltree::node *avltree::node::remove(const int key) {
     }
     // code should not be reached, just to make the compiler happy
     return nullptr;
-}
+}*/
 
 
 /********************************************************************
@@ -164,7 +164,7 @@ avltree::node *avltree::node::remove(const int key) {
  *******************************************************************/
 //unchanged from Blatt 6
 
-vector<int> *avltree::preorder() const {
+/*vector<int> *avltree::preorder() const {
     if (root == nullptr)
         return nullptr;
     return root->preorder();
@@ -231,7 +231,7 @@ vector<int> *avltree::node::postorder() const {
     // Wurzel in vec
     vec->push_back(k);
     return vec;
-}
+}*/
 
 /********************************************************************
  * operator<<
