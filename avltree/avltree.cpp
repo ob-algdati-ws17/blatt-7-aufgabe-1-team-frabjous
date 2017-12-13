@@ -87,18 +87,24 @@ void avltree::insert(const int key) {
 
 void avltree::insertAt(const int key, avltree::node* p, avltree::node* gp) {
     if (p != nullptr) {
-        std::cout << "INS key " << key << " @ parent " << p->k << std::endl;
+        std::cout << "INS key " << key << " @ parent " << p->k << ", Balance " << p->bal << std::endl;
         gp = p;
     }
 
     if (p == nullptr) { //actual insert
         std::cout << "INS actual insert with parent " << gp->k << std::endl;
         if (key < gp->k) {
+            std::cout << "INS left of " << gp->k << std::endl;
             gp->l = new node(key, gp);
+            gp->bal -= 1;
+            return;
         }
 
         else if (key > gp->k) {
+            std::cout << "INS right of " << gp->k << std::endl;
             gp->r = new node(key, gp);
+            gp->bal += 1;
+            return;
         }
 
         else
@@ -123,6 +129,9 @@ void avltree::insertAt(const int key, avltree::node* p, avltree::node* gp) {
             p->bal -= 1;
             insertAt(key, p->l, p);
         }
+    }
+    else {
+        std::cout << "FUKKEN IMBALANCE" << std::endl;
     }
 
 }
