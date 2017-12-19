@@ -20,15 +20,22 @@ int main() {
     cout << tree << endl;
     tree.printBalance();*/
 
-    tree.insert(2);
+    /*tree.insert(2);
     tree.insert(1);
     tree.insert(3);
     tree.insert(4);
-    tree.insert(5);
+
+    cout << endl << endl << endl;
+
+    tree.insert(5);tree.insert(7);tree.insert(6);tree.insert(8);tree.insert(9);
 
     cout << tree << endl;
 
-    tree.printBalance();
+    tree.printBalance();*/
+
+    for (int i = 1; i <= 3; ++i)
+        tree.insert(i);
+    cout << tree << endl;
 
     return 0;
 }

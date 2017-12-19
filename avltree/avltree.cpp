@@ -93,6 +93,7 @@ void avltree::insertAt(const int key, avltree::node *n, avltree::node *p) {
             std::cout << "INS left child of " << p->k << std::endl;
             p->l = new node(key, p);
             p->bal -= 1;
+            std::cout << "INS Node " << p->k << " Balance is now " << p->bal << std::endl;
             upin(p->l);
             return;
 
@@ -100,6 +101,7 @@ void avltree::insertAt(const int key, avltree::node *n, avltree::node *p) {
             std::cout << "INS right child of " << p->k << std::endl;
             p->r = new node(key, p);
             p->bal += 1;
+            std::cout << "INS Node " << p->k << " Balance is now " << p->bal << std::endl;
             upin(p->r);
             return;
 
@@ -107,33 +109,46 @@ void avltree::insertAt(const int key, avltree::node *n, avltree::node *p) {
             return;
     }
 
-    if (key < n->k) { //(n->bal == 1) { //fall 1
-        std::cout << "INS 1" << std::endl;
+    if (key < n->k) { //
+    //if (n->bal == 1) { //fall 1
+        std::cout << "INS Case 1" << std::endl;
         insertAt(key, n->l, n);
-    } else if (key > n->k) {//if (n->bal == -1) { //fall 2
-        std::cout << "INS 2" << std::endl;
+    }
+    else if (key > n->k) {//
+    //else if (n->bal == -1) { //fall 2
+        std::cout << "INS Case 2" << std::endl;
         insertAt(key, n->r, n);
-    } /*else if (n->bal == 0) { //fall 3
+    } else if (n->bal == 0) { //fall 3
         if (key > n->k) { //fall 3.1
             std::cout << "INS 3.1" << std::endl;
-            //n->bal += 1;
+            n->bal += 1;
+            std::cout << "INS Node " << n->k << " Balance is now " << n->bal << std::endl;
             insertAt(key, n->r, n);
         } else if (key < n->k) { //fall 3.2
             std::cout << "INS 3.2" << std::endl;
-            //n->bal -= 1;
+            n->bal -= 1;
+            std::cout << "INS Node " << n->k << " Balance is now " << n->bal << std::endl;
             insertAt(key, n->l, n);
         }
     } else {
         std::cout << "INS FUKKEN IMBALANCE" << std::endl;
-    }*/
+        return;
+    }
 
 }
 
 void avltree::upin(avltree::node *n) {
     std::cout << "UPIN, key " << n->k << std::endl;
+    n->bal = height(n->r) - height(n->l); //recalculating balance
 
     if (n->p == nullptr) {
-        std::cout << "UPIN: root reached." << std::endl;
+        std::cout << "UPIN: root reached. Balance " << n->bal << std::endl;
+        //TODO
+        /*if (n->bal == 2) {
+            rotateRight(n->r);
+        } else if (n->bal == -2) {
+            rotateLeft(n->l);
+        }*/
         return;
     }
 
@@ -141,68 +156,99 @@ void avltree::upin(avltree::node *n) {
 
     if (n->k < n->p->k) { // n linker nachfolger von p
         std::cout << "UPIN: Left" << std::endl;
+        if (n->bal == -2) {
+            std::cout << "UPIN: Left UNBALANCED" << std::endl;
 
-        if (n->p->bal == 1) {
-            std::cout << "UPIN: Left 1.1" << std::endl;
-            n->p->bal = 0;
-            return;
+            if (n->p->bal == 1) {
+                std::cout << "UPIN: Left 1.1" << std::endl;
+                n->p->bal = 0;
+                return;
+            }
+
+            if (n->p->bal == 0) {
+                std::cout << "UPIN: Left 1.2" << std::endl;
+                n->p->bal = -1;
+                std::cout << "UPIN: recursive to parent " << n->p->k << std::endl;
+                upin(n->p);
+                return;
+            }
+
+            if (n->p->bal == -1) {
+                std::cout << "UPIN: Left 1.3" << std::endl;
+                if (n->bal == -1) {
+                    std::cout << "UPIN: Left 1.3.1" << std::endl;
+                    rotateRight(n);
+                    return;
+                } else if (n->bal == 1) {
+                    std::cout << "UPIN: Left 1.3.2" << std::endl;
+                    rotateLeftRight(n);
+                    return;
+                } else {
+                    std::cout << "UPIN: Iterating" << std::endl;
+                    upin(n->p);
+                    return;
+                }
+
+            }
         }
 
-        if (n->p->bal == 0) {
-            std::cout << "UPIN: Left 1.2" << std::endl;
-            n->p->bal = -1;
-            std::cout << "UPIN: recursive to parent " << n->p->k << std::endl;
+        else {
+            std::cout << "UPIN: Left, Balanced. Iterating" << std::endl;
             upin(n->p);
             return;
         }
 
-        if (n->p->bal == -1) {
-            std::cout << "UPIN: Left 1.3" << std::endl;
-            if (n->bal == -1) {
-                std::cout << "UPIN: Left 1.3.1" << std::endl;
-                rotateRight(n);
-                return;
-            }
-            if (n->bal == 1) {
-                std::cout << "UPIN: Left 1.3.2" << std::endl;
-                rotateLeftRight(n);
-                return;
-            }
-
-        }
-
-    } else { //n rechter nachfolger von p
+    } //else { //n rechter nachfolger von p
+    else if (n->k > n->p->k) {
         std::cout << "UPIN: Right" << std::endl;
+        if (n->bal == 2) {
+            std::cout << "UPIN: Right UNBALANCED" << std::endl;
 
-        if (n->p->bal == -1) {
-            std::cout << "UPIN: Right 1.1" << std::endl;
-            n->p->bal = 0;
-            return;
+            if (n->p->bal == -1) {
+                std::cout << "UPIN: Right 1.1" << std::endl;
+                n->p->bal = 0;
+                return;
+            }
+
+            if (n->p->bal == 0) {
+                std::cout << "UPIN: Right 1.2" << std::endl;
+                n->p->bal = 1;
+                std::cout << "UPIN: recursive to parent " << n->p->k << std::endl;
+                upin(n->p);
+                return;
+            }
+
+            if (n->p->bal == 1) {
+                std::cout << "UPIN: Right 1.3" << std::endl;
+                if (n->bal == 1) {
+                    std::cout << "UPIN: Right 1.3.1" << std::endl;
+                    rotateLeft(n);
+                    return;
+                } else if (n->bal == -1) {
+                    std::cout << "UPIN: Right 1.3.2" << std::endl;
+                    rotateRightLeft(n);
+                    return;
+                } else {
+                    std::cout << "UPIN: Right iterating" << std::endl;
+                    upin(n->p);
+                    return;
+                }
+
+            }
+
         }
 
-        if (n->p->bal == 0) {
-            std::cout << "UPIN: Right 1.2" << std::endl;
-            n->p->bal = 1;
-            std::cout << "UPIN: recursive to parent " << n->p->k << std::endl;
+        else {
+            std::cout << "UPIN: Right, Balanced. Iterating" << std::endl;
             upin(n->p);
             return;
         }
+    }
 
-        if (n->p->bal == 1) {
-            std::cout << "UPIN: Right 1.3" << std::endl;
-            if (n->bal == 1) {
-                std::cout << "UPIN: Right 1.3.1" << std::endl;
-                rotateLeft(n);
-                return;
-            }
-            if (n->bal == -1) {
-                std::cout << "UPIN: Right 1.3.2" << std::endl;
-                rotateRightLeft(n);
-                return;
-            }
-
-        }
-
+    else {
+        std::cout << "UPIN: should not be reached, iterating" << std::endl;
+        upin(n->p);
+        return;
     }
 }
 
