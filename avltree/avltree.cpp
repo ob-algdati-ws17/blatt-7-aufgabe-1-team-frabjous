@@ -81,49 +81,51 @@ void avltree::insert(const int key) {
 }
 
 
-void avltree::insertAt(const int key, avltree::node *p, avltree::node *gp) {
-    if (p != nullptr) {
-        std::cout << "INS key " << key << " @ parent " << p->k << ", Balance " << p->bal << std::endl;
-        gp = p;
+void avltree::insertAt(const int key, avltree::node *n, avltree::node *p) {
+    if (n != nullptr) {
+        std::cout << "INS key " << key << " starting @ parent " << n->k << ", Balance " << n->bal << std::endl;
+        p = n; //set parent to current node
     }
 
-    if (p == nullptr) { //actual insert
-        std::cout << "INS actual insert with parent " << gp->k << std::endl;
-        if (key < gp->k) {
-            std::cout << "INS left of " << gp->k << std::endl;
-            gp->l = new node(key, gp);
-            gp->bal -= 1;
-            upin(gp->l);
+    if (n == nullptr) { //actual insert
+        std::cout << "INS empty leaf found at parent " << p->k << std::endl;
+        if (key < p->k) {
+            std::cout << "INS left child of " << p->k << std::endl;
+            p->l = new node(key, p);
+            p->bal -= 1;
+            upin(p->l);
             return;
-        } else if (key > gp->k) {
-            std::cout << "INS right of " << gp->k << std::endl;
-            gp->r = new node(key, gp);
-            gp->bal += 1;
-            upin(gp->r);
+
+        } else if (key > p->k) {
+            std::cout << "INS right child of " << p->k << std::endl;
+            p->r = new node(key, p);
+            p->bal += 1;
+            upin(p->r);
             return;
+
         } else
             return;
     }
 
-    if (p->bal == 1) { //fall 1
+    if (key < n->k) { //(n->bal == 1) { //fall 1
         std::cout << "INS 1" << std::endl;
-        insertAt(key, p->l, p);
-    } else if (p->bal == -1) { //fall 2
+        insertAt(key, n->l, n);
+    } else if (key > n->k) {//if (n->bal == -1) { //fall 2
         std::cout << "INS 2" << std::endl;
-        insertAt(key, p->r, p);
-    } else if (p->bal == 0) { //fall 3
-        if (key > p->k) { //fall 3.1
+        insertAt(key, n->r, n);
+    } /*else if (n->bal == 0) { //fall 3
+        if (key > n->k) { //fall 3.1
             std::cout << "INS 3.1" << std::endl;
-            p->bal += 1;
-            insertAt(key, p->r, p);
-        } else if (key < p->k) { //fall 3.2
+            //n->bal += 1;
+            insertAt(key, n->r, n);
+        } else if (key < n->k) { //fall 3.2
             std::cout << "INS 3.2" << std::endl;
-            p->bal -= 1;
-            insertAt(key, p->l, p);
+            //n->bal -= 1;
+            insertAt(key, n->l, n);
         }
     } else {
         std::cout << "INS FUKKEN IMBALANCE" << std::endl;
-    }
+    }*/
 
 }
 
@@ -440,7 +442,7 @@ std::ostream &operator<<(std::ostream &os, const avltree &tree) {
                 } else {
                     os << "    " << value << " -> " << n->k
                        << " [label=\"" << l << "\"];" << endl;
-                    os << "    " << value << " [xlabel=\"" << n->bal << "\"];" << endl;
+                    //os << "    " << value << " [xlabel=\"" << n->bal << "\"];" << endl;
 
                     printToOs(os, n->k, n->l, "l");
                     printToOs(os, n->k, n->r, "r");
