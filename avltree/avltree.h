@@ -12,11 +12,10 @@ private:
 
     struct node {
         const int k; //key
-        node *p = nullptr;
+        node *p = nullptr; //parent
         node *l = nullptr; //left
         node *r = nullptr; //right
-        //int height = 1; //new nodes start as leaves
-        int bal = 0;
+        int bal = 0; //balance
 
         node(const int ey) : k(ey) {};
         node(const int ey, node *arent) : k(ey), p(arent) {};
@@ -24,12 +23,6 @@ private:
         ~node();
 
         bool search(const int) const;
-        //void insert(const int, node*);
-        //node *remove(const int);
-
-        /*vector<int> *preorder() const;  // (Hauptreihenfolge)
-        vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
-        vector<int> *postorder() const; // (Nebenreihenfolge)*/
     };
 
     node *root = nullptr;
@@ -37,10 +30,14 @@ private:
     void insertAt(const int, node*, node*);
     void upin(node*);
 
+    void upout(node*);
+
+    void rotateLeft(node*);
+    void rotateRight(node*);
+    void rotateLeftRight(node*);
+    void rotateRightLeft(node*);
+
     int height(node*);
-    void calcBalance(node*);
-    void rebalance(node*);
-    void printBalance(node*);
 
 public:
 
@@ -48,19 +45,9 @@ public:
 
     bool search(const int) const;
     void insert(const int);
-    //void remove(const int);
-    void rotateLeft(node*);
-    void rotateRight(node*);
-    void rotateLeftRight(node*);
-    void rotateRightLeft(node*);
+    void remove(const int);
 
-    /*vector<int> *preorder() const;  // (Hauptreihenfolge)
-    vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
-    vector<int> *postorder() const; // (Nebenreihenfolge)*/
-
-    //friend node *findSymSucc(node *);
     friend ostream &operator<<(ostream &, const avltree &);
-    void printBalance();
 
 };
 

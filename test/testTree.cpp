@@ -4,15 +4,12 @@
 using namespace std;
 
 //trivial / testing travis integration
-
 TEST(TreeTest, TreeTest_Trivial) {
     avltree avl;
     EXPECT_EQ(1, 1);
 }
 
-
 // insert
-
 TEST(TreeTest, TreeTest_InsertIntoEmptyTree) {
     avltree avl;
     const int i = 117;
@@ -37,7 +34,27 @@ TEST(TreeTest, TreeTest_InsertThree) {
     EXPECT_TRUE(avl.search(k));
 }
 
+TEST(TreeTest, TreeTest_InsertTen) {
+    avltree avl;
+
+    for (int i = 1; i <= 10; ++i)
+        EXPECT_FALSE(avl.search(i));
+
+    for (int i = 1; i <= 10; ++i)
+        avl.insert(i);
+    for (int i = 1; i <= 10; ++i)
+        EXPECT_TRUE(avl.search(i));
+}
+
 // remove
+TEST(TreeTest, TreeTest_RemoveFromEmptyTree) {
+    avltree avl;
+    const int i = 117;
+    EXPECT_FALSE(avl.search(i));
+    avl.remove(i);
+    EXPECT_FALSE(avl.search(i));
+}
+
 /*TEST(TreeTest, TreeTest_RemoveOne) {
     avltree avl;
     const int i = 117;
