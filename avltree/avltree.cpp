@@ -42,25 +42,24 @@ void avltree::insert(const int key) {
     if (root == nullptr) //empty tree
         root = new node(key);
     else if (!search(key)) //not already in tree
-            insertAt(key, root, nullptr);
+        insertAt(key, root, nullptr);
     // else it's a duplicate
 }
 
 void avltree::insertAt(const int key, avltree::node *n, avltree::node *p) {
 
-    while(true){
+    while (true) {
         p = n; //iterating
-        if(key < n->k){
-            if(n->l == nullptr){
+        if (key < n->k) {
+            if (n->l == nullptr) {
                 n->l = new node(key);
                 n = n->l;
                 n->p = p;
                 break;
             }
             n = n->l;
-        }
-        else if(key>n->k){
-            if(n->r == nullptr){
+        } else if (key > n->k) {
+            if (n->r == nullptr) {
                 n->r = new node(key);
                 n = n->r;
                 n->p = p;
@@ -70,14 +69,13 @@ void avltree::insertAt(const int key, avltree::node *n, avltree::node *p) {
         }
     }
 
-    if(p->bal!=0) { //height unchanged
-        p->bal=0;
-    }
-    else {
-        if(p->r == n){
+    if (p->bal != 0) { //height unchanged
+        p->bal = 0;
+    } else {
+        if (p->r == n) {
             p->bal = 1;
         }
-        if(p->l == n){
+        if (p->l == n) {
             p->bal = -1;
         }
         upin(p);
@@ -86,42 +84,35 @@ void avltree::insertAt(const int key, avltree::node *n, avltree::node *p) {
 }
 
 void avltree::upin(avltree::node *n) {
-    if(n == root) //top of tree, end of recursion
+    if (n == root) //top of tree, end of recursion
         return;
 
-    if(n->p->r == n){ //right
+    if (n->p->r == n) { //right
         n->p->bal++;
-        if(n->p->bal == 0){
+        if (n->p->bal == 0) {
             return;
-        }
-        else if(n->p->bal == 1){
+        } else if (n->p->bal == 1) {
             upin(n->p);
-        }
-        else if(n->p->bal > 1){
-            if(n->bal == 1) {
+        } else if (n->p->bal > 1) {
+            if (n->bal == 1) {
                 rotateLeft(n->p);
                 return;
-            }
-            else if(n->bal == -1){
+            } else if (n->bal == -1) {
                 rotateRightLeft(n->p);
                 return;
             }
         }
-    }
-    else if(n->p->l == n){ //left
+    } else if (n->p->l == n) { //left
         n->p->bal--;
-        if(n->p->bal == 0){
+        if (n->p->bal == 0) {
             return;
-        }
-        else if(n->p->bal == -1){
+        } else if (n->p->bal == -1) {
             upin(n->p);
-        }
-        else if(n->p->bal < -1){
-            if(n->bal == -1) {
+        } else if (n->p->bal < -1) {
+            if (n->bal == -1) {
                 rotateRight(n->p);
                 return;
-            }
-            else if(n->bal == 1){
+            } else if (n->bal == 1) {
                 rotateLeftRight(n->p);
                 return;
             }
@@ -133,177 +124,253 @@ void avltree::remove(const int key) {
     if (root == nullptr) //empty tree
         return;
     else if (search(key)) //already in tree
-        std::cout << "RM key " << key << std::endl; //insertAt(key, root, nullptr);
+        removeAt(key, root);
     // else it's not even in the tree
 }
 
-void avltree::upout(avltree::node *n){
-    if(n == root) //top of tree, end of recursion
-        return;
+void avltree::removeAt(const int key, avltree::node *n) {
+    while (n != nullptr) { //search for key
+        if (n->k == key)
+            break;
+        else if (key < n->k)
+            n = n->l;
+        else if (key > n->k)
+            n = n->r;
+    }
 
-    if(n->p->l == n){ //left
-        if(n->p->bal == -1) {
-            n->p->bal++;
-            upout(n->p);
+    if (n != nullptr) {
+        if (n->l == nullptr && n->r == nullptr) { //both leaves
+
+            if (root == n) { //we're at root
+                root = nullptr;
+                return;
+            }
+
+            if (n->p->l == n) { //left
+                n->p->bal++;
+                if (n->p->bal == 1) { //height unchanged
+                    n->p->l = nullptr;
+                    return;
+                }
+                if (n->p->bal == 0) {
+                    n->p->l = nullptr;
+                    upout(n->p);
+                    return;
+                }
+                if (n->p->bal == 2) {
+                    n->p->bal = 1;
+                    upout(n);
+                    n->p->l = nullptr;
+                    return;
+                }
+            } else if (n->p->r == n) { //right
+                n->p->bal--;
+                if (n->p->bal == -1) { //height unchanged
+                    n->p->r = nullptr;
+                    return;
+                }
+                if (n->p->bal == 0) {
+                    n->p->r = nullptr;
+                    upout(n->p);
+                    return;
+                }
+                if (n->p->bal == -2) {
+                    n->p->bal = -1;
+                    upout(n);
+                    n->p->r = nullptr;
+                    return;
+                }
+            }
+
+        } else if (n->l != nullptr && n->r == nullptr) { //leaf right
+            if (n->p == nullptr) {
+                root = n->l;
+                root->p = nullptr;
+            } else if (n->p->l == n) {
+                n->p->l = n->l;
+                n->p->l->p = n->p;
+                upout(n->p->l);
+            } else {
+                n->p->r = n->l;
+                n->p->r->p = n->p;
+                upout(n->p->r);
+            }
+        } else if (n->r != nullptr && n->l == nullptr) { //leaf left
+            if (n->p == nullptr) {
+                root = n->r;
+                root->p = nullptr;
+            } else if (n->p->r == n) {
+                n->p->r = n->r;
+                n->p->r->p = n->p;
+                upout(n->p->r);
+            } else {
+                n->p->l = n->r;
+                n->p->l->p = n->p;
+                upout(n->p->l);
+            }
         }
-        else if(n->p->bal == 0){
-            n->p->bal++;
+            } else if (n->l != nullptr && n->r != nullptr) { //no leaves
+                std::cout << "RM need symbolic successor here" << std::endl;
+            }
+}
+
+    void avltree::upout(avltree::node *n) {
+        if (n == root) //top of tree, end of recursion
             return;
-        }
-        else if(n->p->bal == 1){
-            if(n->p->r->bal == 0){
-                rotateLeft(n->p);
-                n->p->bal=1;
-                n->p->p->bal=-1;
+
+        if (n->p->l == n) { //left
+            if (n->p->bal == -1) {
+                n->p->bal++;
+                upout(n->p);
+            } else if (n->p->bal == 0) {
+                n->p->bal++;
                 return;
+            } else if (n->p->bal == 1) {
+                if (n->p->r->bal == 0) {
+                    rotateLeft(n->p);
+                    n->p->bal = 1;
+                    n->p->p->bal = -1;
+                    return;
+                } else if (n->p->r->bal == 1) {
+                    rotateLeft(n->p);
+                    upout(n->p->p);
+                    return;
+                } else if (n->p->r->bal == -1) {
+                    rotateRightLeft(n->p);
+                    upout(n->p->p);
+                    return;
+                }
             }
-            else if(n->p->r->bal == 1){
-                rotateLeft(n->p);
-                upout(n->p->p);
+        } else if (n->p->r == n) { //right
+            if (n->p->bal == 1) {
+                n->p->bal--;
+                upout(n->p);
+            } else if (n->p->bal == 0) {
+                n->p->bal--;
                 return;
-            }
-            else if(n->p->r->bal == -1){
-                rotateRightLeft(n->p);
-                upout(n->p->p);
-                return;
-            }
-        }
-    }
-    else if(n->p->r == n){ //right
-        if(n->p->bal == 1) {
-            n->p->bal--;
-            upout(n->p);
-        }
-        else if(n->p->bal == 0){
-            n->p->bal--;
-            return;
-        }
-        else if(n->p->bal == -1) {
-            if (n->p->l->bal == 0) {
-                rotateRight(n->p);
-                n->p->bal = -1;
-                n->p->p->bal = 1;
-                return;
-            } else if (n->p->l->bal == -1) {
-                rotateRight(n->p);
-                upout(n->p->p);
-                return;
-            } else if (n->p->l->bal == 1) {
-                rotateLeftRight(n->p);
-                upout(n->p->p);
-                return;
+            } else if (n->p->bal == -1) {
+                if (n->p->l->bal == 0) {
+                    rotateRight(n->p);
+                    n->p->bal = -1;
+                    n->p->p->bal = 1;
+                    return;
+                } else if (n->p->l->bal == -1) {
+                    rotateRight(n->p);
+                    upout(n->p->p);
+                    return;
+                } else if (n->p->l->bal == 1) {
+                    rotateLeftRight(n->p);
+                    upout(n->p->p);
+                    return;
+                }
             }
         }
     }
-}
 
-void avltree::rotateLeft(avltree::node* a) {
-    //std::cout << "ROTATE LEFT @ " << a->k << " & " << a->r->k << std::endl;
-    avltree::node *b = a->r;
+    void avltree::rotateLeft(avltree::node *a) {
+        //std::cout << "ROTATE LEFT @ " << a->k << " & " << a->r->k << std::endl;
+        avltree::node *b = a->r;
 
-    if (a == root){
-        root = b;
-        root->p = nullptr;
-    }
-
-    else {
-        if (a->p->r == a) { //RIGHT
-            a->p->r=b;
-            b->p=a->p;
-        } else if (a->p->l == a) { //LEFT
-            a->p->l = b;
-            b->p=a->p;
+        if (a == root) {
+            root = b;
+            root->p = nullptr;
+        } else {
+            if (a->p->r == a) { //RIGHT
+                a->p->r = b;
+                b->p = a->p;
+            } else if (a->p->l == a) { //LEFT
+                a->p->l = b;
+                b->p = a->p;
+            }
         }
+
+        a->r = b->l;
+
+        if (a->r != nullptr)
+            a->r->p = a;
+
+        b->l = a;
+        a->p = b;
+        a->bal = 0;
+        b->bal = 0;
     }
 
-    a->r = b->l;
+    void avltree::rotateRight(avltree::node *a) {
+        //std::cout << "ROTATE RIGHT @ " << a->k << " & " << a->l->k << std::endl;
+        avltree::node *b = a->l;
 
-    if (a->r != nullptr)
-        a->r->p = a;
-
-    b->l = a;
-    a->p = b;
-    a->bal = 0;
-    b->bal = 0;
-}
-
-void avltree::rotateRight(avltree::node* a) {
-    //std::cout << "ROTATE RIGHT @ " << a->k << " & " << a->l->k << std::endl;
-    avltree::node *b = a->l;
-
-    if(a == root){
-        root = b;
-        root->p = nullptr;
-    }
-    else {
-        if (a->p->r == a) { //right
-            a->p->r = b;
-            b->p = a->p;
-        } else if (a->p->l == a) { //left
-            a->p->l = b;
-            b->p = a->p;
+        if (a == root) {
+            root = b;
+            root->p = nullptr;
+        } else {
+            if (a->p->r == a) { //right
+                a->p->r = b;
+                b->p = a->p;
+            } else if (a->p->l == a) { //left
+                a->p->l = b;
+                b->p = a->p;
+            }
         }
+
+        a->l = b->r;
+
+        if (a->l != nullptr)
+            a->l->p = a;
+
+        b->r = a;
+        a->p = b;
+        b->bal = 0;
+        a->bal = 0;
     }
 
-    a->l = b->r;
+    void avltree::rotateLeftRight(avltree::node *a) {
+        rotateLeft(a->l);
+        rotateRight(a);
+    }
 
-    if (a->l != nullptr)
-        a->l->p = a;
-
-    b->r = a;
-    a->p = b;
-    b->bal = 0;
-    a->bal = 0;
-}
-
-void avltree::rotateLeftRight(avltree::node* a) {
-    rotateLeft(a->l);
-    rotateRight(a);
-}
-
-void avltree::rotateRightLeft(avltree::node* a) {
-    rotateRight(a->r);
-    rotateLeft(a);
-}
+    void avltree::rotateRightLeft(avltree::node *a) {
+        rotateRight(a->r);
+        rotateLeft(a);
+    }
 
 /********************************************************************
  * operator<<
  *******************************************************************/
-std::ostream &operator<<(std::ostream &os, const avltree &tree) {
-    function<void(std::ostream &, const int, const int, const avltree::node *, const string)> printToOs
-            = [&](std::ostream &, const int value, const int bal, const avltree::node *n, const string l) {
+    std::ostream &operator<<(std::ostream &os, const avltree &tree) {
+        function<void(std::ostream &, const int, const int, const avltree::node *, const string)> printToOs
+                = [&](std::ostream &, const int value, const int bal, const avltree::node *n, const string l) {
 
-                static int nullcount = 0;
+                    static int nullcount = 0;
 
-                os << "    " << value << " [label=\"" << value << " b" << bal << "\"];" << endl;
+                    os << "    " << value << " [label=\"" << value << " b" << bal << "\"];" << endl;
 
-                if (n == nullptr) {
-                    os << "    null" << nullcount << "[shape=point];" << endl;
-                    os << "    " << value << " -> null" << nullcount
-                       << " [label=\"" << l << "\"];" << endl;
-                    nullcount++;
-                } else {
-                    os << "    " << value << " -> " << n->k
-                       << " [label=\"" << l << "\"];" << endl;
+                    if (n == nullptr) {
+                        os << "    null" << nullcount << "[shape=point];" << endl;
+                        os << "    " << value << " -> null" << nullcount
+                           << " [label=\"" << l << "\"];" << endl;
+                        nullcount++;
+                    } else {
+                        os << "    " << value << " -> " << n->k
+                           << " [label=\"" << l << "\"];" << endl;
 
 
-                    printToOs(os, n->k, n->bal, n->l, "l");
-                    printToOs(os, n->k, n->bal, n->r, "r");
-                }
-            };
-    os << "digraph tree {" << endl;
-    if (tree.root == nullptr) {
-        os << "    null " << "[shape=point];" << endl;
-    } else {
-        printToOs(os, tree.root->k, tree.root->bal, tree.root->l, "l");
-        printToOs(os, tree.root->k, tree.root->bal, tree.root->r, "r");
+                        printToOs(os, n->k, n->bal, n->l, "l");
+                        printToOs(os, n->k, n->bal, n->r, "r");
+                    }
+                };
+        os << "digraph tree {" << endl;
+        if (tree.root == nullptr) {
+            os << "    null " << "[shape=point];" << endl;
+        } else {
+            printToOs(os, tree.root->k, tree.root->bal, tree.root->l, "l");
+            printToOs(os, tree.root->k, tree.root->bal, tree.root->r, "r");
+        }
+        os << "}" << endl;
+        return os;
     }
-    os << "}" << endl;
-    return os;
-}
 
-int avltree::height(avltree::node *n) {
-    if (n == nullptr)
-        return -1;
-    return 1 + std::max(height(n->l), height(n->r));
-}
+    int avltree::height(avltree::node *n) {
+        if (n == nullptr)
+            return -1;
+        return 1 + std::max(height(n->l), height(n->r));
+    }

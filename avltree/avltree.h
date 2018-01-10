@@ -30,6 +30,7 @@ private:
     void insertAt(const int, node*, node*);
     void upin(node*);
 
+    void removeAt(const int, node*);
     void upout(node*);
 
     void rotateLeft(node*);
