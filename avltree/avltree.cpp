@@ -1,4 +1,5 @@
 #include "avltree.h"
+#include <functional>
 
 using namespace ::std;
 
