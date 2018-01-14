@@ -211,7 +211,15 @@ void avltree::removeAt(const int key, avltree::node *n) {
             }
         }
     } else if (n->l != nullptr && n->r != nullptr) { //Fall 3: Beide Blätter
-        std::cout << "RM need symbolic successor here" << std::endl;
+
+        auto symSucc = findSymSucc(root);
+        auto toDeleteNode = symSucc;
+        remove(symSucc->k);
+        toDeleteNode->l = nullptr;
+        toDeleteNode->r = nullptr;
+        root = new avltree::node(symSucc->k, root->l, root->r);
+        delete toDeleteNode;
+
     }
 }
 
@@ -266,6 +274,16 @@ void avltree::upout(avltree::node *n) {
             }
         }
     }
+}
+
+avltree::node *findSymSucc(avltree::node *n) {
+    if (n->r == nullptr)
+        return nullptr;
+    auto result = n->r;
+    while (result->l != nullptr) {
+        result = result->l;
+    }
+    return result;
 }
 
 void avltree::rotateLeft(avltree::node *a) {

@@ -20,6 +20,7 @@ private:
         node(const int ey) : k(ey) {};
         node(const int ey, node *arent) : k(ey), p(arent) {};
         node(const int ey, node *eft, node *ight) : k(ey), l(eft), r(ight) {};
+        node(const int ey, node *eft, node *ight, node *arent) : k(ey), l(eft), r(ight), p(arent) {};
         ~node();
 
         bool search(const int) const;
@@ -48,6 +49,7 @@ public:
     void insert(const int);
     void remove(const int);
 
+    friend node *findSymSucc(node *);
     friend ostream &operator<<(ostream &, const avltree &);
 
 };
