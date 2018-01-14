@@ -55,7 +55,7 @@ TEST(TreeTest, TreeTest_RemoveFromEmptyTree) {
     EXPECT_FALSE(avl.search(i));
 }
 
-/*TEST(TreeTest, TreeTest_RemoveOne) {
+TEST(TreeTest, TreeTest_RemoveOne) {
     avltree avl;
     const int i = 117;
     EXPECT_FALSE(avl.search(i));
@@ -87,4 +87,21 @@ TEST(TreeTest, TreeTest_RemoveThree) {
     EXPECT_FALSE(avl.search(i));
     EXPECT_FALSE(avl.search(j));
     EXPECT_FALSE(avl.search(k));
-}*/
+}
+
+TEST(TreeTest, TreeTest_RemoveTen) {
+    avltree avl;
+
+    for (int i = 1; i <= 10; ++i)
+        EXPECT_FALSE(avl.search(i));
+
+    for (int i = 1; i <= 10; ++i)
+        avl.insert(i);
+    for (int i = 1; i <= 10; ++i)
+        EXPECT_TRUE(avl.search(i));
+
+    for (int i = 1; i <= 10; ++i)
+        avl.remove(i);
+    for (int i = 1; i <= 10; ++i)
+        EXPECT_FALSE(avl.search(i));
+}
