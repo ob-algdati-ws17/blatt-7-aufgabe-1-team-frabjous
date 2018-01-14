@@ -46,6 +46,18 @@ TEST(TreeTest, TreeTest_InsertTen) {
         EXPECT_TRUE(avl.search(i));
 }
 
+TEST(TreeTest, TreeTest_InsertTenReverse) {
+    avltree avl;
+
+    for (int i = 10; i > 0; --i)
+        EXPECT_FALSE(avl.search(i));
+
+    for (int i = 10; i > 0; --i)
+        avl.insert(i);
+    for (int i = 10; i > 0; --i)
+        EXPECT_TRUE(avl.search(i));
+}
+
 // remove
 TEST(TreeTest, TreeTest_RemoveFromEmptyTree) {
     avltree avl;
@@ -103,5 +115,22 @@ TEST(TreeTest, TreeTest_RemoveTen) {
     for (int i = 1; i <= 10; ++i)
         avl.remove(i);
     for (int i = 1; i <= 10; ++i)
+        EXPECT_FALSE(avl.search(i));
+}
+
+TEST(TreeTest, TreeTest_RemoveTenReverse) {
+    avltree avl;
+
+    for (int i = 10; i > 0; --i)
+        EXPECT_FALSE(avl.search(i));
+
+    for (int i = 10; i > 0; --i)
+        avl.insert(i);
+    for (int i = 10; i > 0; --i)
+        EXPECT_TRUE(avl.search(i));
+
+    for (int i = 10; i > 0; --i)
+        avl.remove(i);
+    for (int i = 10; i > 0; --i)
         EXPECT_FALSE(avl.search(i));
 }

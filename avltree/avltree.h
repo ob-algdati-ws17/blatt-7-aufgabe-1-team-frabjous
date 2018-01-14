@@ -23,15 +23,15 @@ private:
         node(const int ey, node *eft, node *ight, node *arent) : k(ey), l(eft), r(ight), p(arent) {};
         ~node();
 
-        bool search(const int) const;
+        bool search(int) const;
     };
 
     node *root = nullptr;
 
-    void insertAt(const int, node*, node*);
+    void insertAt(int, node*, node*);
     void upin(node*);
 
-    void removeAt(const int, node*);
+    void removeAt(int, node*);
     void upout(node*);
 
     void rotateLeft(node*);
@@ -45,9 +45,9 @@ public:
 
     ~avltree();
 
-    bool search(const int) const;
-    void insert(const int);
-    void remove(const int);
+    bool search(int) const;
+    void insert(int);
+    void remove(int);
 
     friend node *findSymSucc(node *);
     friend ostream &operator<<(ostream &, const avltree &);

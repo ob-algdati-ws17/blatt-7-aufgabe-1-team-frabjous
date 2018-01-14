@@ -7,7 +7,7 @@ int main() {
 
     avltree tree;
 
-    for (int i = 1; i <= 10; ++i)
+    for (int i = 1; i <= 99; ++i)
         tree.insert(i);
     cout << tree << endl;
 
